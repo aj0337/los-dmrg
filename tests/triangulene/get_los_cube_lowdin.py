@@ -74,5 +74,5 @@ for orbital in orbital_map:
     los = LOs(U.T, lcao)
 
     for key, value in orbital.items():
-        for w_G in los.get_orbitals(orbital_idx):
-            write(f"{folder_path}/lo2_{key}_{value}.cube", atoms, data=w_G)
+        for w, w_G in enumerate(los.get_orbitals(orbital_idx)):
+            write(f"{folder_path}/lo{key}{w}_orb{value}.cube", atoms, data=w_G)
