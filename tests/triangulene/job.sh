@@ -1,10 +1,10 @@
 #!/bin/bash -l
 #SBATCH --no-requeue
 #SBATCH --job-name="defs1"
-#SBATCH --nodes=4
-#SBATCH --ntasks-per-node=8
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=01:00:00
+#SBATCH --time=02:00:00
 #SBATCH --partition=normal
 #SBATCH --constraint=gpu
 #SBATCH --hint=nomultithread
@@ -20,6 +20,7 @@ module load daint-mc cray-python cray-fftw numpy libxc libvdwxc intel
 
 source "/users/ajayaraj/software/gpaw/gpaw-env/bin/activate"
 
-srun -n 32 gpaw python dft_inputs.py
-# srun -n 1 python get_lcao_cube.py
-# srun -n 1 python get_los_cube.py
+# srun -n 8 gpaw python dft_inputs.py
+srun -n 1 python get_lcao_cube.py
+srun -n 1 python get_los_cube.py
+srun -n 1 python get_los_cube_lowdin.py
