@@ -8,6 +8,8 @@ from qttools.gpaw.los import LOs
 import os
 
 
+data_folder = "output"
+
 def get_species_indices(atoms,species):
     indices = []
     for element in species:
@@ -15,7 +17,7 @@ def get_species_indices(atoms,species):
         indices.extend(element_indices)
     return sorted(indices)
 
-gpwfile = './struct.gpw'
+gpwfile = f'{data_folder}/struct.gpw'
 
 atoms, calc = restart(gpwfile, txt=None)
 lcao = LCAOwrap(calc)
@@ -62,19 +64,10 @@ orbital_map = [
     },
 ]
 
-folder_path = 'los_lowdin_cube'
+folder_path = f'{data_folder}/los_lowdin_cube'
 
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
-
-
-for orbital in orbital_map:
-    orbital_idx = basis.extract().take(orbital)
-    los = LOs(Ulow.T, lcao)
-
-    for key, value in orbital.items():
-        for w_G in los.get_orbitals(orbital_idx):
-            write(f"{folder_path}/lo1_{key}_{value}.cube", atoms, data=w_G)
 
 for orbital in orbital_map:
     orbital_idx = basis.extract().take(orbital)

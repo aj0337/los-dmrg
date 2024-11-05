@@ -4,10 +4,12 @@ from gpaw import *
 import numpy as np
 import os
 
-atoms = read('struct.xyz')
-calc = GPAW('struct.gpw', txt=None)
+data_folder = "output"
 
-folder_path = 'lcao_cube_files'
+atoms = read('struct.xyz')
+calc = GPAW(f'{data_folder}/struct.gpw', txt=None)
+
+folder_path = f'{data_folder}/lcao_cube_files'
 
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
