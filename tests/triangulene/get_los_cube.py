@@ -36,7 +36,7 @@ orbital_map = [
     },
 ]
 
-folder_path = f'{data_folder}/los_cube_files'
+folder_path = f'{data_folder}/los_cube'
 
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
