@@ -8,6 +8,8 @@ from qttools.gpaw.los import LOs
 import os
 
 
+data_folder = "output"
+
 def get_species_indices(atoms,species):
     indices = []
     for element in species:
@@ -15,7 +17,7 @@ def get_species_indices(atoms,species):
         indices.extend(element_indices)
     return sorted(indices)
 
-gpwfile = './struct.gpw'
+gpwfile = f'{data_folder}/struct.gpw'
 
 atoms, calc = restart(gpwfile, txt=None)
 lcao = LCAOwrap(calc)
@@ -30,62 +32,11 @@ basis = Basis(atoms, nao_a)
 
 orbital_map = [
     {
-        'C': 0
-    },
-    {
-        'C': 1
-    },
-    {
-        'C': 2
-    },
-    {
         'C': 3
-    },
-    {
-        'C': 4
-    },
-    {
-        'C': 5
-    },
-    {
-        'C': 6
-    },
-    {
-        'C': 7
-    },
-    {
-        'C': 8
-    },
-    {
-        'C': 9
-    },
-    {
-        'C': 10
-    },
-    {
-        'C': 11
-    },
-    {
-        'C': 12
-    },
-    {
-        'H': 0
-    },
-    {
-        'H': 1
-    },
-    {
-        'H': 2
-    },
-    {
-        'H': 3
-    },
-    {
-        'H': 4
     },
 ]
 
-folder_path = 'los_cube_files'
+folder_path = f'{data_folder}/los_cube_files'
 
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
@@ -94,10 +45,13 @@ SUBDIAG_SPECIES = ("C", "H")
 subdiag_indices = get_species_indices(atoms, SUBDIAG_SPECIES)
 Usub, eig = subdiagonalize_atoms(basis, H_lcao, S_lcao, a=subdiag_indices)
 
+basis_subdiag_region = basis[subdiag_indices]
+index_subdiag_region = basis_subdiag_region.get_indices()
+
 for orbital in orbital_map:
-    orbital_idx = basis.extract().take(orbital)
-    los = LOs(Usub.T, lcao)
+    orbital_idx = basis_subdiag_region.extract().take(orbital)
+    los = LOs(Usub[:,index_subdiag_region].T, lcao)
 
     for key, value in orbital.items():
-        for w_G in los.get_orbitals(orbital_idx):
-            write(f"{folder_path}/lo_{key}_{value}.cube", atoms, data=w_G)
+        for w, w_G in enumerate(los.get_orbitals(orbital_idx)):
+            write(f"{folder_path}/lo{key}{w}_orb{value}.cube", atoms, data=w_G)
