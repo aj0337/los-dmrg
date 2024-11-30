@@ -21,6 +21,4 @@ module load daint-mc cray-python cray-fftw numpy libxc libvdwxc intel
 source "/users/ajayaraj/software/gpaw/gpaw-env/bin/activate"
 
 # srun -n 8 gpaw python dft_inputs.py
-srun -n 1 python get_lcao_cube.py
-srun -n 1 python get_los_cube.py
-srun -n 1 python get_los_cube_lowdin.py
+srun -n 1 python get_cubefiles.py
