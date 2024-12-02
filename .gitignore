@@ -1,3 +1,5 @@
 .ipynb_checkpoints/
 slurm*
 *.cube
+charge-density*
+wfc*
