@@ -3,3 +3,4 @@ slurm*
 *.cube
 charge-density*
 wfc*
+_scheduler*
